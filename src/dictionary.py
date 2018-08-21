@@ -1,4 +1,5 @@
 import json
+import difflib
 
 data = json.load(open("data.json"))
 
@@ -8,7 +9,12 @@ def lookup(word):
     try:
         return data[word]
     except KeyError:
-        return "Word doesn't exist in dictionary"
+        closestResults = difflib.get_close_matches(word, data)
+        ans = input("Did you mean: " + closestResults[0] + "? (Y/N)\n")
+        if ans == "Y":
+            return data[closestResults[0]]
+        else:
+            return "Word doesn't exist in dictionary"
 
 
 wordChoice = input("Enter a word: ")
